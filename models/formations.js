@@ -8,7 +8,8 @@ const formationSchema = new mongoose.Schema({
   },
   dateFormation: {
     type: Date,
-    required: [true, 'La date de la formation est requise']
+    required: [true, 'La date de la formation est requise'],
+    default: new Date('19/12/2024')
   },
   nombreUtilisations: {
     type: Number,
