@@ -25,25 +25,29 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Route POST pour ajouter une nouvelle formation
 router.post('/', async (req, res) => {
-  const { nom, dateFormation, nombreUtilisations, thematique, prix } = req.body;
+  const { nom, dateFormation, nombreUtilisations, thematique, prix, imageUrl } = req.body;
+  console.log('Données reçues:', { nom, dateFormation, nombreUtilisations, thematique, prix, imageUrl });  // Ajout de la journalisation
   try {
-    const newFormation = new Formation({ nom, dateFormation, nombreUtilisations, thematique, prix });
+    if (!imageUrl || !nom || !dateFormation || !nombreUtilisations || !thematique || !prix) {
+      return res.status(400).json({ message: 'Tous les champs sont requis' });
+    }
+    const newFormation = new Formation({ nom, dateFormation, nombreUtilisations, thematique, prix, imageUrl });
     await newFormation.save();
     res.status(201).json(newFormation);
   } catch (error) {
-    res.status(500).json({ message: 'Erreur lors de l\'ajout de la formation' });
+    console.error(error);  // Journalisation de l'erreur
+    res.status(500).json({ message: 'Erreur lors de l\'ajout de la formation', error: error.message });
   }
 });
 
 // Route PUT pour modifier une formation
 router.put('/:id', async (req, res) => {
-  const { nom, dateFormation, nombreUtilisations, thematique, prix } = req.body;
+  const { nom, dateFormation, nombreUtilisations, thematique, prix, imageUrl } = req.body;
   try {
     const updatedFormation = await Formation.findByIdAndUpdate(
       req.params.id,
-      { nom, dateFormation, nombreUtilisations, thematique, prix },
+      { nom, dateFormation, nombreUtilisations, thematique, prix, imageUrl },
       { new: true }
     );
     if (!updatedFormation) {

@@ -9,7 +9,7 @@ const formationSchema = new mongoose.Schema({
   dateFormation: {
     type: Date,
     required: [true, 'La date de la formation est requise'],
-    default: new Date('19/12/2024')
+    default: Date.now  // Utilisez Date.now pour obtenir la date actuelle
   },
   nombreUtilisations: {
     type: Number,
@@ -23,6 +23,11 @@ const formationSchema = new mongoose.Schema({
     type: Number,
     required: [true, 'Le prix de la formation est requis'],
     min: [0, 'Le prix ne peut pas être négatif']
+  },
+  imageUrl: {
+    type: String,
+    required: false // Vous pouvez aussi rendre ce champ optionnel si besoin
+   
   }
 }, { timestamps: true });
 
